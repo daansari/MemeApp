@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var memeImageView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
@@ -27,12 +27,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var originalImage: UIImage?
     var memedImage: UIImage?
     
+    let textFieldDelegate = TextFieldDelegate()
+    
     var scrollViewOriginY: CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         shareButton.isEnabled = false
+        
+        topTextField.delegate = textFieldDelegate
+        bottomTextField.delegate = textFieldDelegate
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,9 +49,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         subscribeToKeyboardNotifications()
         
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
-        
-        topTextField.delegate = self
-        bottomTextField.delegate = self
         
         let memeTextAttributes:[String:Any] = [
             NSStrokeColorAttributeName: UIColor.black,
@@ -139,17 +141,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         dismiss(animated: true, completion: nil)
     }
     
-    //    MARK: - Text Field Delegate
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField.text == "TOP" || textField.text == "BOTTOM" {
-            textField.text = ""
-        }
-    }
+//    //    MARK: - Text Field Delegate
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        textField.resignFirstResponder()
+//        return true
+//    }
+//    
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        if textField.text == "TOP" || textField.text == "BOTTOM" {
+//            textField.text = ""
+//        }
+//    }
     
     //    Move the view when keyboard covers the textfield
     func keyboardWillShow(_ notification: Notification) {
@@ -183,7 +185,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
 //    MARK: - Memed Image Save and Share
     func save() {
-        UIImageWriteToSavedPhotosAlbum((self.memedImage)!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        if let memedImage = self.memedImage {
+            UIImageWriteToSavedPhotosAlbum(memedImage, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        }
     }
     
     func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
@@ -202,29 +206,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func generateMemedImage() -> UIImage {
         
         //        Render view to an image
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
-        toolbar.isHidden = true
+        showOrHideNavBarAndToolbar(on: true)
         UIGraphicsBeginImageContext(self.view.frame.size)
         view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
         let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        toolbar.isHidden = false
+        showOrHideNavBarAndToolbar(on: false)
         return memedImage
+    }
+    
+    func showOrHideNavBarAndToolbar(on: Bool) {
+        self.navigationController?.setNavigationBarHidden(value, animated: true)
+        toolbar.isHidden = on
     }
     
     struct Meme {
         var topText: String
         var bottomText: String
         var originalImage: UIImage
-        var memedImage: UIImage
-        
-        init(topText: String, bottomText: String, originalImage: UIImage, memedImage: UIImage) {
-            self.topText = topText
-            self.bottomText = bottomText
-            self.originalImage = originalImage
-            self.memedImage = memedImage
-        }
+        var memedImage: UIImage        
     }
     
 //    MARK: - Transition Method
