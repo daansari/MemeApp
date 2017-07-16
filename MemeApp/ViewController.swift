@@ -216,7 +216,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func showOrHideNavBarAndToolbar(on: Bool) {
-        self.navigationController?.setNavigationBarHidden(value, animated: true)
+        self.navigationController?.setNavigationBarHidden(on, animated: true)
         toolbar.isHidden = on
     }
     
