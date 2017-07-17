@@ -53,7 +53,7 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="BOTTOM" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JeF-at-pyR">
                                 <rect key="frame" x="16" y="523" width="343" height="50"/>
@@ -62,7 +62,7 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.12637259070000001" green="0.12639245390000001" blue="0.1263653636" alpha="1" colorSpace="calibratedRGB"/>
@@ -95,12 +95,14 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="bottomFieldConstraint" destination="Keh-7n-qeT" id="33u-k6-mZN"/>
                         <outlet property="bottomTextField" destination="JeF-at-pyR" id="fIa-3t-Ixt"/>
                         <outlet property="cameraButton" destination="YcE-ha-B4p" id="Qx8-01-E0s"/>
                         <outlet property="cancelButton" destination="NZP-Jg-AGa" id="8dP-zr-WmF"/>
                         <outlet property="memeImageView" destination="TM3-2A-w5d" id="BWP-1d-gbJ"/>
                         <outlet property="shareButton" destination="JcB-gx-REP" id="hwP-ON-bl6"/>
                         <outlet property="toolbar" destination="qmP-ji-uJY" id="5BS-1h-GGp"/>
+                        <outlet property="topFieldConstraint" destination="NMs-h2-D0e" id="cnt-ZK-cMt"/>
                         <outlet property="topTextField" destination="gHo-Vx-vjk" id="fjh-ud-TYo"/>
                     </connections>
                 </viewController>

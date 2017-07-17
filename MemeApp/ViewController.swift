@@ -24,6 +24,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet weak var toolbar: UIToolbar!
     
+    @IBOutlet weak var topFieldConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomFieldConstraint: NSLayoutConstraint!
     var originalImage: UIImage?
     var memedImage: UIImage?
     
@@ -141,18 +143,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         dismiss(animated: true, completion: nil)
     }
     
-//    //    MARK: - Text Field Delegate
-//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        textField.resignFirstResponder()
-//        return true
-//    }
-//    
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        if textField.text == "TOP" || textField.text == "BOTTOM" {
-//            textField.text = ""
-//        }
-//    }
-    
     //    Move the view when keyboard covers the textfield
     func keyboardWillShow(_ notification: Notification) {
         if bottomTextField.isFirstResponder {
@@ -230,6 +220,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 //    MARK: - Transition Method
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         scrollViewOriginY = self.view.frame.origin.y
+        if UIDevice.current.orientation.isLandscape {
+            print("Landscape")
+            bottomFieldConstraint.constant = topFieldConstraint.constant
+        } else {
+            print("Portrait")
+            bottomFieldConstraint.constant = topFieldConstraint.constant + 20
+        }
+
     }
 
 
